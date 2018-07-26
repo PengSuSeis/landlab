@@ -277,7 +277,32 @@ class DiagonalsMixIn(object):
     @cache_result_in_object()
     @make_return_array_immutable
     def d8_adjacent_nodes_at_node(self):
-        return np.vstack((super(DiagonalsMixIn, self).adjacent_nodes_at_node,
+        """Get adjacent nodes along d8s.
+
+        Order is the landlab standard, counterclockwise starting from
+        east for links and then for diagonals.
+
+        Examples
+        --------
+        >>> from landlab import RasterModelGrid
+        >>> grid = RasterModelGrid((4, 3))
+        >>> grid.d8_adjacent_nodes_at_node
+        array([[ 1,  3, -1, -1,  4, -1, -1, -1],
+               [ 2,  4,  0, -1,  5,  3, -1, -1],
+               [-1,  5,  1, -1, -1,  4, -1, -1],
+               [ 4,  6, -1,  0,  7, -1, -1,  1],
+               [ 5,  7,  3,  1,  8,  6,  0,  2],
+               [-1,  8,  4,  2, -1,  7,  1, -1],
+               [ 7,  9, -1,  3, 10, -1, -1,  4],
+               [ 8, 10,  6,  4, 11,  9,  3,  5],
+               [-1, 11,  7,  5, -1, 10,  4, -1],
+               [10, -1, -1,  6, -1, -1, -1,  7],
+               [11, -1,  9,  7, -1, -1,  6,  8],
+               [-1, -1, 10,  8, -1, -1,  7, -1]])
+
+        LLCATS: NINF CONN
+        """
+        return np.hstack((super(DiagonalsMixIn, self).adjacent_nodes_at_node,
                           self.diagonal_adjacent_nodes_at_node))
 
     @property
